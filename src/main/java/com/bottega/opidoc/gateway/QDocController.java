@@ -1,6 +1,8 @@
 package com.bottega.opidoc.gateway;
 
 import com.bottega.opidoc.qdocdraft.editor.EditorService;
+import com.bottega.opidoc.qdocdraft.finder.QDocDraftReadModel;
+import com.bottega.opidoc.qdocdraft.finder.QDocFinderService;
 import com.bottega.opidoc.qdocdraft.flow.CreateQDocCommand;
 import com.bottega.opidoc.qdocdraft.flow.FlowService;
 import com.bottega.opidoc.qdocdraft.flow.ToVerificationQDocCommand;
@@ -19,6 +21,7 @@ public class QDocController {
 
 	private final FlowService flowService;
 	private final EditorService editorService;
+	private final QDocFinderService finderService;
 
 //	@PostMapping("/qdocs")
 //	public ResponseEntity<Void> create(@RequestBody CreateQDocCommand command, UriComponentsBuilder builder) {
@@ -29,9 +32,9 @@ public class QDocController {
 //		return ResponseEntity.created(uriComponents.toUri()).build();
 //	}
 
-	@GetMapping("/qdocs")
-	public String get(){
-		return "";
+	@GetMapping("/qdocs/{id}")
+	public QDocDraftReadModel get(@PathVariable UUID id){
+		return finderService.getOne(id);
 	}
 
 	@PutMapping("/qdocs/{id}")
@@ -54,10 +57,6 @@ public class QDocController {
 
 		return ResponseEntity.ok().build();
 	}
-
-
-
-
 
 
 

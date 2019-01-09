@@ -2,19 +2,17 @@ package com.bottega.opidoc.qdocdraft.flow;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Properties;
+import java.util.UUID;
 
 @Component
 public class FlowService {
 	private QDocDraftRepo repo;
-	// TODO: currentUser
+	private CurrentUserClient userClient;
 
-	// ID
-	// Object
-	// void
 	public void handle(CreateQDocCommand command) {
 
-		QDocDraft draft = new QDocDraft(command.getId(), command.getType());
+		UUID userId = userClient.getId();
+		QDocDraft draft = new QDocDraft(command.getId(), command.getType(),userId);
 		repo.save(draft);
 
 	}
@@ -22,9 +20,11 @@ public class FlowService {
 	public void handle(ToVerificationQDocCommand command) {
 
 		QDocDraft draft = repo.load(command.getId());
-		//
-		//
+
+		draft.toVerification(userClient.getId());
+
 		repo.save(draft);
+
 	}
 
 	public void handle(VerifyQDocCommand command) {
